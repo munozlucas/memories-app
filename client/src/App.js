@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <Container maxwidth="lg">
-      <AppBar className={classes.appBar} position="static" color="inherit" style={{ flexDirection: "row" }}>
+      <AppBar className={classes.appBar} position="static" color="inherit">
         <Typography className={classes.heading} variant="h2" align="center">
           Memories
         </Typography>
