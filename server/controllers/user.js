@@ -31,14 +31,17 @@ export const signUp = async (req, res) => {
 
     if (password !== confirmPassword) return res.status(400).json({ message: "Passwords don't match" });
 
-    const hashedPassword = bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const result = await User.create({ email, password: hashedPassword, name: `${firstName} ${lastName}` });
 
     const token = jwt.sign({ email: result.email, id: result._id }, "test", { expiresIn: "1h" });
+
+    //sacar el password del result
     res.status(200).json({ result: result, token });
 
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Something went wrong" });
   }
 };

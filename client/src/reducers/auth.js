@@ -4,6 +4,7 @@ const authReducer = (state = { authData: null }, action) => {
   //TODO pasar localstorage a action
   switch (action.type) {
     case AUTH:
+      //todo sacar de aca el localstorage
       localStorage.setItem("profile", JSON.stringify({ ...action.data }));
 
       return { ...state, authData: action.data, loading: false, errors: null };

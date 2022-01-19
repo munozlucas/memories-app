@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
@@ -12,7 +13,7 @@ const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
@@ -23,7 +24,10 @@ const Navbar = () => {
   useEffect(() => {
     const token = user?.token;
 
-    //JWT ...
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
 
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);

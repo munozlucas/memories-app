@@ -44,7 +44,7 @@ const Auth = () => {
     const result = res?.profileObj;
     const token = res?.tokenId;
     try {
-      dispatch({ type: "AUTH", data: { result, token } });
+      await dispatch({ type: "AUTH", data: { result, token } });
       navigate("/");
     } catch (error) {
       console.log(error);
