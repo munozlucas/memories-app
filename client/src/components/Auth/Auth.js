@@ -8,12 +8,17 @@ import { useNavigate } from "react-router-dom";
 import useStyles from "./styles";
 import Input from "./Input";
 import Icon from "./icon";
+import { signin, signup } from '../../actions/auth';
+
+const initialState = { firstName: "", lastName: "", email: "", password: " ", confirmPassword: "" };
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const navigate = useNavigate()
+  const [formData, setFormData] = useState(initialState);
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const switchMode = () => {
@@ -21,8 +26,18 @@ const Auth = () => {
     setShowPassword(false);
   };
 
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (isSignUp) {
+      dispatch(signup(formData, navigate));
+    } else {
+      dispatch(signin(formData, navigate));
+    }
+  };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   const handleShowPassword = () => setShowPassword((prevShowPAssword) => !prevShowPAssword);
 
   const googleSuccess = async (res) => {
@@ -30,8 +45,7 @@ const Auth = () => {
     const token = res?.tokenId;
     try {
       dispatch({ type: "AUTH", data: { result, token } });
-      navigate('/')
-      
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
